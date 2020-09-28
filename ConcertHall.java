@@ -9,7 +9,7 @@ class Person{ // 사람 이름 저장
 	public void setName(String name) { // 이름을 입력했다면 저장
 		this.name = name;
 	}
-	public String getName() {
+	public String getName() { // 저장된 이름을 반환 
 		return name;
 	}
 }
@@ -21,10 +21,10 @@ class People{ // 한 줄 저장 (콘서트 줄 각각 10명씩 있음)
 			per[i] = new Person();
 		}
 	}
-	public void setName(int n, String name) {
+	public void setName(int n, String name) { // n번째 사람 이름 저장(한 라인 저장)
 		per[n-1].setName(name);
 	}
-	public String getName(int n) {
+	public String getName(int n) { // n번째 저장된 사람 이름 반환
 		return per[n-1].getName();
 	}
 }
@@ -32,7 +32,7 @@ class People{ // 한 줄 저장 (콘서트 줄 각각 10명씩 있음)
 class Ticket{
 	private People[] p;
 	public Ticket() {
-		p = new People[3];
+		p = new People[3]; // 단계가 3단계임 (S, A, B)
 		for(int i = 0; i<p.length; i++) {
 			p[i] = new People();
 		}
@@ -50,11 +50,16 @@ class Ticket{
 		String name = sc.next();
 		System.out.print("번호>> ");
 		int n = sc.nextInt();
-		p[num].setName(n, name);
+		if(p[num-1].getName(n).equals("---"))
+			p[num-1].setName(n, name);
+		else 
+			System.out.println("이미 예약이 완료된 좌석입니다. 다시 예약하세요.");
+	//	System.out.println((num-1)+":"+n+":"+p[num-1].getName(n)); // 저장되는지 확인 -> 완료 !
 	}
 	
 	public void find() {
 		System.out.print("S>> ");
+	//	System.out.println(p[0].getName(1)); // S좌석 1번에 사람이름 저장되는지 확인 -> 간단한 문제였음. main에서 저장 초기화문제
 		for(int j = 0; j<10; j++) {
 			System.out.print(p[0].getName(j+1)+" ");
 		}
@@ -80,7 +85,10 @@ class Ticket{
 		System.out.println(" ");
 		System.out.print("번호>> ");
 		int n = sc.nextInt();
-		p[num].setName(n, "---");
+		if(p[num-1].getName(n).equals("---"))
+			System.out.println("예약되지 않은 자리입니다. 다른 좌석을 선택해주세요.");
+		else
+			p[num-1].setName(n, "---");
 	}
 	
 	public void exit() {
@@ -90,14 +98,14 @@ class Ticket{
 
 public class ConcertHall {
 	public static void main(String[] args) {
-		System.out.println("데이식스 콘서트 예약 시스템입니다 *^^*");
-
+		Scanner sc = new Scanner(System.in);
+		System.out.print("환영합니다.콘서트 예약 시스템입니다.\n원하는 가수의 이름을 입력해주세요 >> ");
+		String idol = sc.next();
+		System.out.println(idol+" 콘서트 예약 시스템입니다 *^^*");
+		Ticket t = new Ticket(); // while문 안에 넣으면 예약 조회 이전에 계속 초기화 되니까 문제가 발생함
 		while(true) {
 			System.out.print("예약:1 조회:2 취소:3 끝내기:4 >> ");
-			Scanner sc = new Scanner(System.in);
 			int number = sc.nextInt();
-			
-			Ticket t = new Ticket();
 				switch(number) {
 					case 1:
 						t.res();
